@@ -1,0 +1,96 @@
+---
+title: "Maps"
+author: "Carolyn de Graaf"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    theme: united
+    cold_folding: hide
+
+---
+
+Script for plotting adapted from
+https://r-spatial.org/r/2018/10/25/ggplot2-sf.html
+
+Goal is to plot points for sightings of various species over a map of Australia
+
+
+## Setup
+```{r setup, message=FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE
+)
+	
+	options(stringsAsFactors = FALSE)
+	then = Sys.time()
+  set.seed(434)
+
+  library(readr)
+  
+  library(ggplot2)
+  theme_set(theme_bw())
+  library(sf) #required for maps
+  library("rnaturalearth")
+  library("rnaturalearthdata")
+
+  getwd()
+```
+
+
+
+## Plotting Australia
+
+```{r ozPlot}
+
+
+world <- ne_countries(scale = "medium", returnclass = "sf")
+class(world)
+australia <- subset(world, admin == "Australia")
+
+
+australia <- subset(world, admin == "Australia")
+(mainland <- ggplot(data = australia) +
+     geom_sf(fill = "cornsilk") )
+
+
+```
+
+
+## Plotting Observations
+
+```{r plotObs}
+
+## Reading in the coordinates of the obsservations
+## reformatted into a csv with column names
+mothSites = read_csv("BoroniaClavataAndMoth.csv")
+
+ggplot(data = australia) +
+    geom_sf() +
+    geom_point(data = mothSites, aes(x = longitude, y = latitude), size = 2, 
+        shape = 23, fill = c("red","darkred","darkblue")[as.factor(mothSites$species)]) +
+    coord_sf(xlim = c(112, 125), ylim = c(-36, -30), expand = FALSE)
+
+ggplot(data = australia) +
+    geom_sf() +
+    geom_point(data = mothSites, aes(x = longitude, y = latitude), size = 2, 
+        shape = 23, fill = c("red","darkred","darkblue")[as.factor(mothSites$species)]) +
+    coord_sf(xlim = c(118, 124), ylim = c(-35.2, -33), expand = FALSE)
+
+
+```
+
+
+## Session Info
+
+```{r sessionInfo}
+
+sessionInfo()
+getwd()
+date()
+Sys.time() - then
+
+```
+
