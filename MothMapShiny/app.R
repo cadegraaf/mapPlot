@@ -83,33 +83,25 @@ ui <- fluidPage(
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
-  inFile <- input$file1
-  if (is.null(inFile))
-    return(NULL) 
-  else{
-    print("readToPrintTable")
-    print(inFile$datapath)
-    print(input$header)
-    fileTable = read.csv(inFile$datapath,header=T)
-    print("read")
-    print(fileTable[1,1])
-  }
-    
+     
    
     
    
     
     output$mothPlot <- renderPlot({
+      inFile <- input$file1
       if (is.null(inFile)){
         
-      ggplot(data = australia) +
+        ggplot(data = australia) +
           geom_sf() +
           coord_sf(xlim = c(input$lat[1], input$lat[2]), ylim = c(input$long[1], input$long[2]), expand = FALSE)
       }else{
+        fileTable = read.csv(inFile$datapath,header=T)
+        
         ggplot(data = australia) +
           geom_sf() +
           coord_sf(xlim = c(input$lat[1], input$lat[2]), ylim = c(input$long[1], input$long[2]), expand = FALSE)+
-          geom_point(data = inFile, aes(x = longitude, y = latitude), size = 2, 
+          geom_point(data = fileTable, aes(x = longitude, y = latitude,fill=species), size = 2, 
                      shape = 23)
         
         
@@ -123,11 +115,17 @@ server <- function(input, output) {
         # 'size', 'type', and 'datapath' columns. The 'datapath'
         # column will contain the local filenames where the data can
         # be found.
-        
+        inFile <- input$file1
         if (is.null(inFile))
           return(NULL) 
-        print(fileTable[1,1])
-        fileTable
+        else{
+          print("readToPrintTable")
+          fileTable = read.csv(inFile$datapath,header=T)
+          fileTable
+        }
+        
+        
+
       })
       
  
