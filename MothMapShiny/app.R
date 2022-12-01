@@ -54,7 +54,7 @@ ui <- fluidPage(
                     accept=c('text/csv','text/comma-separated-values,text/plain','.csv')),
           
           
-  
+          #currently won't work if the file doesn't have a header! as looks for lat, long and species
           tags$hr(),
           checkboxInput("header", "Header", TRUE),
       
@@ -85,14 +85,14 @@ ui <- fluidPage(
 server <- function(input, output) {
      
    
-    
-   
-    
+      
     output$mothPlot <- renderPlot({
       inFile <- input$file1
+      
+      #see if we have any points to plot or not
       if (is.null(inFile)){
         
-        ggplot(data = australia) +
+          ggplot(data = australia) +
           geom_sf() +
           coord_sf(xlim = c(input$lat[1], input$lat[2]), ylim = c(input$long[1], input$long[2]), expand = FALSE)
       }else{
@@ -109,7 +109,7 @@ server <- function(input, output) {
         }
   )
       
-      output$contents <- renderTable({
+    output$contents <- renderTable({
         # input$file1 will be NULL initially. After the user selects
         # and uploads a file, it will be a data frame with 'name',
         # 'size', 'type', and 'datapath' columns. The 'datapath'
@@ -126,10 +126,10 @@ server <- function(input, output) {
         
         
 
-      })
+    })
       
  
-  }
+}
 
 # Run the application 
 shinyApp(ui = ui, server = server)
