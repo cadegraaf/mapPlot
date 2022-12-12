@@ -25,6 +25,8 @@ library(sf) #required for maps
 library("rnaturalearth")
 library("rnaturalearthdata")
 
+#clean up files
+library(stringr)
 
 #setting up maps
 #currently just for oz
@@ -97,6 +99,11 @@ server <- function(input, output) {
           coord_sf(xlim = c(input$long[1], input$long[2]), ylim = c(input$lat[1], input$lat[2]), expand = FALSE)
       }else{
         fileTable = read.csv(inFile$datapath,header=T)
+        
+        #remove white space in the data file
+        fileTable$latitude = as.numeric(str_trim(fileTable$latitude))
+        fileTable$longitude = as.numeric(str_trim(fileTable$longitude))
+        
         
         ggplot(data = australia) +
           geom_sf() +
