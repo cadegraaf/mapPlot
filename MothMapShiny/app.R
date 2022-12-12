@@ -63,11 +63,11 @@ ui <- fluidPage(
           
           numericRangeInput(
             inputId = "lat", label = "Latitude:",
-            value = c(110, 160)
+            value = c(-8,-50)
           ),
           numericRangeInput(
             inputId = "long", label = "Longitude:",
-            value = c(-8, -50)
+            value = c(110,160)
           )
           
         ),
@@ -94,16 +94,16 @@ server <- function(input, output) {
         
           ggplot(data = australia) +
           geom_sf() +
-          coord_sf(xlim = c(input$lat[1], input$lat[2]), ylim = c(input$long[1], input$long[2]), expand = FALSE)
+          coord_sf(xlim = c(input$long[1], input$long[2]), ylim = c(input$lat[1], input$lat[2]), expand = FALSE)
       }else{
         fileTable = read.csv(inFile$datapath,header=T)
         
         ggplot(data = australia) +
           geom_sf() +
-          coord_sf(xlim = c(input$lat[1], input$lat[2]), ylim = c(input$long[1], input$long[2]), expand = FALSE)+
+          coord_sf(xlim = c(input$long[1], input$long[2]), ylim = c(input$lat[1], input$lat[2]), expand = FALSE) +
           geom_point(data = fileTable, aes(x = longitude, y = latitude,fill=species), size = 2, 
                      shape = 23)
-        
+         #print(fileTable)
         
       }
         }
@@ -119,7 +119,7 @@ server <- function(input, output) {
         if (is.null(inFile))
           return(NULL) 
         else{
-          print("readToPrintTable")
+          #print("readToPrintTable")
           fileTable = read.csv(inFile$datapath,header=T)
           fileTable
         }

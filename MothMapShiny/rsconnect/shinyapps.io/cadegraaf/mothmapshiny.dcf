@@ -1,0 +1,11 @@
+name: mothmapshiny
+title:
+username:
+account: cadegraaf
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 7854029
+bundleId: 6613934
+url: https://cadegraaf.shinyapps.io/mothmapshiny/
+when: 1670558295.28298
+lastSyncTime: 1670558295.28299
