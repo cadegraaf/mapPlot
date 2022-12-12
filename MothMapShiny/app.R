@@ -11,6 +11,9 @@
 #want it to display oz on the screen no points to start with
 #then upload the csv and refresh to show them
 
+#this can be found on shinyapps.io under MothMapShiny
+
+
 #libraries needed
 
 #shiny
